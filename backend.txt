@@ -1,0 +1,88 @@
+sh-5.1$ sudo su
+[root@Backend bin]# cd /home
+[root@Backend home]# ls
+ec2-user  sample_checks  ssm-user
+[root@Backend home]# cd s
+bash: cd: s: No such file or directory
+[root@Backend home]# cd sample_checks/
+[root@Backend sample_checks]# ls
+check_disk_full.json  check_disk_full.yml  disk.sh  file.json  name_space_test.yml  script1_demo.json
+[root@Backend sample_checks]# vi httpdcheck.json
+[root@Backend sample_checks]# ls
+check_disk_full.json  check_disk_full.yml  disk.sh  file.json  name_space_test.yml  script1_demo.json
+[root@Backend sample_checks]# vi httpdcheck.json
+[root@Backend sample_checks]# sensuctl check update -f httpdcheck.json --namespace default
+Error: unknown shorthand flag: 'f' in -f
+[root@Backend sample_checks]# sensuctl create -f httpdcheck.json --namespace default
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+resource 0: invalid character ']' looking for beginning of value
+Error: in httpdcheck.json: too many errors
+[root@Backend sample_checks]# cat httpdcheck.json
+{
+  "api_version": "core/v2",
+  "type": "Check",
+  "metadata": {
+    "name": "httpd",
+    "labels": {},
+    "annotations": {}
+  },
+  "spec": {
+    "command": "/etc/sensu/plugins/httpd.sh",
+    "subscriptions": [
+      "system",
+    ],
+    "publish": true,
+    "interval": 60,
+    "handlers": [
+      "default"
+    ]
+  }
+}
+[root@Backend sample_checks]# vi httpdcheck.json
+[root@Backend sample_checks]# sensuctl create -f httpdcheck.json --namespace default
+[root@Backend sample_checks]# cat httpdcheck.json
+{
+  "api_version": "core/v2",
+  "type": "Check",
+  "metadata": {
+    "name": "httpd",
+    "labels": {},
+    "annotations": {}
+  },
+  "spec": {
+    "command": "/etc/sensu/plugins/httpd.sh",
+    "subscriptions": [
+      "system"
+    ],
+    "publish": true,
+    "interval": 60,
+    "handlers": [
+      "default"
+    ]
+  }
+}
+[root@Backend sample_checks]# sensuctl entity list
+    ID      Class    OS         Subscriptions                 Last Seen
+────────── ─────── ─────── ─────────────────────── ────────────────────────────────
+  agent-1   agent   linux   system,entity:agent-1   2023-08-29 12:07:53 +0000 UTC
+  agent1    agent   linux   entity:agent1           2023-08-29 12:07:53 +0000 UTC
+[root@Backend sample_checks]# sensuctl event list
+  Entity          Check                                         Output                                  Status   Silenced             Timestamp                           UUID
+────────── ──────────────────── ────────────────────────────────────────────────────────────────────── ──────── ────────── ─────────────────────────────── ───────────────────────────────────────
+  agent-1   demo-check           sh: line 1: /etc/sensu/plugins/script1.sh: No such file or directory      127   false      2023-08-29 12:05:55 +0000 UTC   1b7cad3b-03b2-4964-88a0-33de9794c11e
+
+  agent-1   httpd                Unit httpd.service could not be found.                                      2   false      2023-08-29 12:08:00 +0000 UTC   f2291bdb-005e-4f11-b041-db923c7720c3
+
+  agent-1   keepalive            Keepalive last sent from agent-1 at 2023-08-29 12:07:53 +0000 UTC           0   false      2023-08-29 12:07:53 +0000 UTC   572a8d11-3ab7-4b92-be74-3b841a6d55a9
+  agent1    check-mysql-status   Resolved manually with Web UI                                               0   false      2023-08-18 10:01:20 +0000 UTC   003cd507-fbc4-45c6-99cd-7116dfa5333f
+  agent1    keepalive            Keepalive last sent from agent1 at 2023-08-29 12:07:53 +0000 UTC            0   false      2023-08-29 12:07:53 +0000 UTC   31c1e080-abec-49bb-9767-0dae25c18f8d
+[root@Backend sample_checks]#

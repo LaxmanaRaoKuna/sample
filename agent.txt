@@ -1,0 +1,36 @@
+sh-5.1$ sudo su
+[root@agent1 bin]# cd /etc/sensu/plu
+bash: cd: /etc/sensu/plu: No such file or directory
+[root@agent1 bin]# cd /etc/sensu/plugins/
+[root@agent1 plugins]# ls
+disk_full.sh  script1.sh
+[root@agent1 plugins]# httpd.sh
+bash: httpd.sh: command not found
+[root@agent1 plugins]# vi httpd.sh
+[root@agent1 plugins]# cat httpd.sh
+#!/bin/bash
+
+#/usr/local/cpanel/scripts/restartsrv_httpd --status
+systemctl status httpd
+if [[ $? -eq  0 ]]; then
+  # Process is running, generate OK
+  exit 0
+else
+  # Process is not running, generate CRITICAL
+  exit 2
+[root@agent1 plugins]# ls -lsa
+total 12
+0 drwxrwxrwx. 2 root root  60 Aug 29 12:00 .
+0 drwxr-xr-x. 3 root root  38 Aug 29 10:05 ..
+4 -rwxr-xr-x. 1 root root 174 Aug 22 07:04 disk_full.sh
+4 -rw-r--r--. 1 root root 219 Aug 29 12:00 httpd.sh
+4 -rwxrwxrwx. 1 root root 792 Aug 29 11:28 script1.sh
+[root@agent1 plugins]# chmod +x /etc/sensu/plugins/httpd.sh
+[root@agent1 plugins]# ls -lsa
+total 12
+0 drwxrwxrwx. 2 root root  60 Aug 29 12:00 .
+0 drwxr-xr-x. 3 root root  38 Aug 29 10:05 ..
+4 -rwxr-xr-x. 1 root root 174 Aug 22 07:04 disk_full.sh
+4 -rwxr-xr-x. 1 root root 219 Aug 29 12:00 httpd.sh
+4 -rwxrwxrwx. 1 root root 792 Aug 29 11:28 script1.sh
+[root@agent1 plugins]#
