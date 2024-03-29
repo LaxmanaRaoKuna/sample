@@ -36,4 +36,4 @@ total 12
 [root@agent1 plugins]#
 
 
-hello
+hello world
