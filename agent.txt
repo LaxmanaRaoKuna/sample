@@ -34,3 +34,6 @@ total 12
 4 -rwxr-xr-x. 1 root root 219 Aug 29 12:00 httpd.sh
 4 -rwxrwxrwx. 1 root root 792 Aug 29 11:28 script1.sh
 [root@agent1 plugins]#
+
+
+hello
